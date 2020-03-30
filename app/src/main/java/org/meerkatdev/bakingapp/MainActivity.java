@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
         recipeAdapter.setData(recipes);
     }
 
-
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Recipe recipe = recipeAdapter.elements[clickedItemIndex];

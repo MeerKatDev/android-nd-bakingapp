@@ -18,20 +18,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import org.meerkatdev.bakingapp.R;
 import org.meerkatdev.bakingapp.adapters.RecipeStepAdapter;
 import org.meerkatdev.bakingapp.data.Recipe;
-import org.meerkatdev.bakingapp.utils.ListItemClickListener;
+import org.meerkatdev.bakingapp.utils.ItemClickListener;
 
 public class StepsListFragment extends Fragment {
 
-    private ListItemClickListener mCallback;
-    //private RecyclerView recyclerView;
-    private LinearLayoutManager llm;
+    private ItemClickListener mCallback;
     private RecipeStepAdapter viewAdapter;
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         try {
-            mCallback = (ListItemClickListener) context;
+            mCallback = (ItemClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + " must implement ListItemClickListener!");
         }
@@ -41,44 +39,29 @@ public class StepsListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("NONO", getActivity().getClass().getSimpleName() );
         final View rootView = inflater.inflate(R.layout.fragment_steps_list, container, false);
-        final FragmentActivity c = getActivity();
-        //recyclerView = rootView.findViewById(R.id.rv_recipe_steps);
-        //llm = new LinearLayoutManager(ctx);
-        final RecyclerView recyclerView = rootView.findViewById(R.id.rv_recipe_steps);
-        recyclerView.setLayoutManager(llm);
-        recyclerView.setHasFixedSize(true);
-        //recyclerView.setAdapter(viewAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(c);
-        recyclerView.setLayoutManager(layoutManager);
-        Recipe recipe = (Recipe) c.getIntent().getExtras().get("recipe");
+        final FragmentActivity fa = getActivity();
+        setupRecyclerView(fa, rootView);
+        useIntent(fa);
 
-        new Thread(() -> {
-            viewAdapter = new RecipeStepAdapter(0, mCallback);
-            c.runOnUiThread(() -> {
-                recyclerView.setAdapter(viewAdapter);
-                viewAdapter.setData(recipe.steps);
-            });
-        }).start();
-        //setupRecyclerView(rootView.getContext(), rootView);
-        //useIntent(getActivity().getIntent());
         return rootView;
     }
 
-//    private void useIntent(Intent intent) {
-//        if(intent != null) {
-//            Log.d("howmany", String.valueOf(recipe.steps.length));
-//            viewAdapter.setData(recipe.steps);
-//        }
-//    }
-//    private void setupRecyclerView(Context ctx, View rootView) {
-//        recyclerView = rootView.findViewById(R.id.rv_recipe_steps);
-//        llm = new LinearLayoutManager(ctx);
-//        recyclerView.setLayoutManager(llm);
-//        recyclerView.setHasFixedSize(true);
-//        viewAdapter = new RecipeStepAdapter(0, mCallback);
-//        recyclerView.setAdapter(viewAdapter);
-//    }
+    private void useIntent(FragmentActivity c) {
+        Intent intent = c.getIntent();
+        if(intent != null) {
+            Recipe recipe = (Recipe) intent.getExtras().get("recipe");
+            viewAdapter.setData(recipe.steps);
+        }
+    }
+
+    private void setupRecyclerView(FragmentActivity c, View rootView) {
+        final RecyclerView recyclerView = rootView.findViewById(R.id.rv_recipe_steps);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(c);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        viewAdapter = new RecipeStepAdapter(0, mCallback);
+        recyclerView.setAdapter(viewAdapter);
+    }
 
 }
