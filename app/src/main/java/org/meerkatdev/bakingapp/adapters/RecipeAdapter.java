@@ -28,10 +28,8 @@ public class RecipeAdapter extends RecyclerView.Adapter implements ListItemClick
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context ctx = parent.getContext();
-        int gridItemLayout = R.layout.recipe_card;
-        LayoutInflater inflater = LayoutInflater.from(ctx);
-        View view = inflater.inflate(gridItemLayout, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.recipe_card, parent, false);
         return new RecipeAdapter.RecipeViewHolder(view);
     }
 
@@ -59,11 +57,9 @@ public class RecipeAdapter extends RecyclerView.Adapter implements ListItemClick
 
 
     protected class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        //final ImageView recipeView;
 
         RecipeViewHolder(View itemView) {
             super(itemView);
-            //recipeView = itemView.findViewById(R.id.tv_recipe_name);
             itemView.setOnClickListener(this);
         }
 

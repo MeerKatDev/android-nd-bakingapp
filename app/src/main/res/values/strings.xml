@@ -6,6 +6,13 @@
     <string name="label_prev">Previous</string>
     <string name="label_next">Next</string>
 
-    <string name="stub_text_instruction" translatable="false">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="stub_text_instruction" translatable="false">
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat.
+    </string>
+    <string name="stub_recipe_step_desc">Add something to this</string>
+    <string name="stub_recipe_step_index">1.</string>
 
 </resources>

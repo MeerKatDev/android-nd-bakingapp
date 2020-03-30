@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StepDetailActivity"
+            android:name=".RecipeStepsListActivity"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

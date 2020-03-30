@@ -2,7 +2,6 @@ package org.meerkatdev.bakingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -11,7 +10,6 @@ import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.util.Log;
 
-import org.json.JSONObject;
 import org.meerkatdev.bakingapp.adapters.RecipeAdapter;
 import org.meerkatdev.bakingapp.data.Recipe;
 import org.meerkatdev.bakingapp.utils.JSONUtils;
@@ -20,8 +18,8 @@ import org.meerkatdev.bakingapp.utils.ListItemClickListener;
 /**
  * https://review.udacity.com/#!/rubrics/829/view
  * FRAGMENTS (or BASICS
- * - App should display recipes from provided network resource.
- * - App should allow navigation between individual recipes and recipe steps.
+ * - OK App should display recipes from provided network resource.
+ * - OK App should allow navigation between individual recipes and recipe steps.
  * - App uses RecyclerView and can handle recipe steps that include videos or images.
  * - Application uses Master Detail Flow to display recipe steps and navigation between them.
  * - Application uses Exoplayer to display videos.
@@ -67,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     @Override
     public void onListItemClick(int clickedItemIndex) {
         Recipe recipe = recipeAdapter.elements[clickedItemIndex];
-        Intent intent = new Intent(this, StepDetailActivity.class);
+        Intent intent = new Intent(this, RecipeStepsListActivity.class);
         intent.putExtra("recipe", recipe);
         startActivity(intent);
     }
@@ -82,10 +80,12 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     }
 
     private int numberOfColumns() {
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int width = displayMetrics.widthPixels;
-        return width / 400;
+        if(getResources().getBoolean(R.bool.is_tablet)) {
+            DisplayMetrics displayMetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+            int width = displayMetrics.widthPixels;
+            return width / 400;
+        } else return 1;
     }
 
     @Override

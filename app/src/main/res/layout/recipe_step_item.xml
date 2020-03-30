@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recipe_step"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@android:color/darker_gray"
     android:padding="1dp">
 
     <TextView
-        android:id="@+id/tv_recipe_step"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:id="@+id/tv_recipe_step_index"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/stub_recipe_step_index"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tv_recipe_step_description"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        tools:text="@string/stub_recipe_step_desc"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
