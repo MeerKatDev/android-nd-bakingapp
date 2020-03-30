@@ -7,14 +7,14 @@ public class RecipeStep {
     public int id;
     public String shortDescription;
     public String description;
-    public URL videoURL;
-    public URL thumbnailURL;
+    public String videoURL;
+    public String thumbnailURL;
 
-    public RecipeStep(int id, String shortDescription, String description, URL videoURL, URL thumbnailURL) {
-        this.id = id;
-        this.shortDescription = shortDescription;
-        this.description = description;
-        this.videoURL = videoURL;
-        this.thumbnailURL = thumbnailURL;
-    }
+//    public RecipeStep(int id, String shortDescription, String description, String videoURL, String thumbnailURL) {
+//        this.id = id;
+//        this.shortDescription = shortDescription;
+//        this.description = description;
+//        this.videoURL = videoURL;
+//        this.thumbnailURL = thumbnailURL;
+//    }
 }

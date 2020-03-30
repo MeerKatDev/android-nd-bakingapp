@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 
+import org.meerkatdev.bakingapp.data.Recipe;
 import org.meerkatdev.bakingapp.utils.JSONUtils;
-
-import org.meerkatdev.bakingapp.R;
 
 /**
  * https://review.udacity.com/#!/rubrics/829/view
@@ -45,7 +45,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String json = JSONUtils.getJsonFromRaw(this, R.raw.baking);
-
+        Recipe[] recipes = JSONUtils.convertJsonToRecipeList(json);
+        Log.d("nnonon", recipes[0].name);
     }
 
 

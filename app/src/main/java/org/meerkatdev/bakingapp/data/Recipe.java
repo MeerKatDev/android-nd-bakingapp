@@ -11,12 +11,12 @@ public class Recipe {
     public int servings;
     public String image;
 
-    public Recipe(int id, String name, Ingredient[] ingredients, RecipeStep[] steps, int servings, String image) {
-        this.id = id;
-        this.name = name;
-        this.ingredients = ingredients;
-        this.steps = steps;
-        this.servings = servings;
-        this.image = image;
-    }
+//    public Recipe(int id, String name, Ingredient[] ingredients, RecipeStep[] steps, int servings, String image) {
+//        this.id = id;
+//        this.name = name;
+//        this.ingredients = ingredients;
+//        this.steps = steps;
+//        this.servings = servings;
+//        this.image = image;
+//    }
 }
