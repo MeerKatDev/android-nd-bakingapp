@@ -1,6 +1,9 @@
 package org.meerkatdev.bakingapp.data;
 
-public class Ingredient {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Ingredient implements Parcelable {
 
     public String name;
     public String measure;
@@ -12,5 +15,33 @@ public class Ingredient {
         this.quantity = quantity;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.measure);
+        dest.writeString(this.quantity);
+    }
+
+    protected Ingredient(Parcel in) {
+        this.name = in.readString();
+        this.measure = in.readString();
+        this.quantity = in.readString();
+    }
+
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+        @Override
+        public Ingredient createFromParcel(Parcel source) {
+            return new Ingredient(source);
+        }
+
+        @Override
+        public Ingredient[] newArray(int size) {
+            return new Ingredient[size];
+        }
+    };
 }

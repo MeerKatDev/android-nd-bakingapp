@@ -2,14 +2,20 @@ package org.meerkatdev.bakingapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
+import org.json.JSONObject;
+import org.meerkatdev.bakingapp.adapters.RecipeAdapter;
 import org.meerkatdev.bakingapp.data.Recipe;
 import org.meerkatdev.bakingapp.utils.JSONUtils;
+import org.meerkatdev.bakingapp.utils.ListItemClickListener;
 
 /**
  * https://review.udacity.com/#!/rubrics/829/view
@@ -31,14 +37,21 @@ import org.meerkatdev.bakingapp.utils.JSONUtils;
  * - Widget displays ingredient list for desired recipe.
  * Cards: https://material.io/components/cards/#cards%C2%ADusage
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ListItemClickListener {
 
-    private RecyclerView recyclerView;
-//    private MovieAdapter movieAdapter;
-//    private AppDatabase mDb;
-//    MovieViewModel movieViewModel;
     GridLayoutManager glm;
     Parcelable mListState;
+    private RecyclerView recyclerView;
+    private RecipeAdapter recipeAdapter;
+//    private AppDatabase mDb;
+//    MovieViewModel movieViewModel;
+
+    // TODO add json parsing to tests
+    // TODO add two intents test
+    // orientation rotation test?
+
+    private final static String TAG = MainActivity.class.getSimpleName();
+    private final static String LIST_STATE_KEY = "list-state-key";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +59,55 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         String json = JSONUtils.getJsonFromRaw(this, R.raw.baking);
         Recipe[] recipes = JSONUtils.convertJsonToRecipeList(json);
-        Log.d("nnonon", recipes[0].name);
+        setupRecyclerView();
+        recipeAdapter.setData(recipes);
     }
 
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        Recipe recipe = recipeAdapter.elements[clickedItemIndex];
+        Intent intent = new Intent(this, StepDetailActivity.class);
+        intent.putExtra("recipe", recipe);
+        startActivity(intent);
+    }
+
+    private void setupRecyclerView() {
+        recyclerView = this.findViewById(R.id.rv_recipes);
+        glm = new GridLayoutManager(this, numberOfColumns());
+        recyclerView.setLayoutManager(glm);
+        recyclerView.setHasFixedSize(true);
+        recipeAdapter = new RecipeAdapter(0, this);
+        recyclerView.setAdapter(recipeAdapter);
+    }
+
+    private int numberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        return width / 400;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "Resuming activity");
+        if (null != mListState) {
+            glm.onRestoreInstanceState(mListState);
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        mListState = glm.onSaveInstanceState();
+        state.putParcelable(LIST_STATE_KEY, mListState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle state) {
+        super.onRestoreInstanceState(state);
+        mListState = state.getParcelable(LIST_STATE_KEY);
+    }
 
 }

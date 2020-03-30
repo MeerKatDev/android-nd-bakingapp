@@ -12,7 +12,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
 
 //    final private ListItemClickListener mOnClickListener;
 //    public List<Movie> availableMovies;
-    private int noMovies;
+    private int noSteps;
 
     @NonNull
     @Override
@@ -27,7 +27,7 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
 
     @Override
     public int getItemCount() {
-        return noMovies;
+        return noSteps;
     }
 
 
