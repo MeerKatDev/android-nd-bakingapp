@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".RecipeStepsListActivity"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <fragment
-        android:id="@+id/master_list_fragment"
-        android:name="org.meerkatdev.bakingapp.ui.StepsListFragment"
+        android:id="@+id/step_content_fragment"
+        android:name="org.meerkatdev.bakingapp.ui.StepContentFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

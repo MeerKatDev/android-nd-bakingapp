@@ -20,10 +20,13 @@ import org.meerkatdev.bakingapp.adapters.RecipeStepAdapter;
 import org.meerkatdev.bakingapp.data.Recipe;
 import org.meerkatdev.bakingapp.utils.ItemClickListener;
 
+import java.util.Objects;
+
 public class StepsListFragment extends Fragment {
 
     private ItemClickListener mCallback;
     private RecipeStepAdapter viewAdapter;
+    public Recipe recipe;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -42,16 +45,25 @@ public class StepsListFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_steps_list, container, false);
         final FragmentActivity fa = getActivity();
         setupRecyclerView(fa, rootView);
-        useIntent(fa);
+        populateAdapterFromIntent(fa);
 
         return rootView;
     }
 
-    private void useIntent(FragmentActivity c) {
+    private void populateAdapterFromIntent(FragmentActivity c) {
         Intent intent = c.getIntent();
-        if(intent != null) {
-            Recipe recipe = (Recipe) intent.getExtras().get("recipe");
-            viewAdapter.setData(recipe.steps);
+        Bundle b = intent.getExtras();
+        if (b != null && b.containsKey("recipe")) {
+            try {
+                this.recipe = b.getParcelable("recipe");
+                if (this.recipe != null) {
+                    viewAdapter.setData(this.recipe.steps);
+                }
+            } catch (NullPointerException e) {
+                Log.d("StepsListFragment", Objects.requireNonNull(e.getMessage()));
+                e.printStackTrace();
+
+            }
         }
     }
 

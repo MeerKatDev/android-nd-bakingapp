@@ -1,5 +1,6 @@
 package org.meerkatdev.bakingapp.adapters;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,15 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
     @NonNull
     @Override
     public RecipeStepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.recipe_step_item, parent, false);
         return new RecipeStepAdapter.RecipeStepViewHolder(view);
+    }
+
+    // used only when
+    private void setRecipeStepContent(Context ctx) {
+
     }
 
     @Override

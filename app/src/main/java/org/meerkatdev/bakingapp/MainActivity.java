@@ -20,8 +20,9 @@ import org.meerkatdev.bakingapp.utils.ListItemClickListener;
  * FRAGMENTS (or BASICS
  * - OK App should display recipes from provided network resource.
  * - OK App should allow navigation between individual recipes and recipe steps.
- * - App uses RecyclerView and can handle recipe steps that include videos or images.
- * - Application uses Master Detail Flow to display recipe steps and navigation between them.
+ * - OK App uses RecyclerView and can handle recipe steps that include videos or images.
+ * - OK Application uses Master Detail Flow to display recipe steps and navigation between them.
+ *  EXOPLAYER
  * - Application uses Exoplayer to display videos.
  * - Application properly initializes and releases video assets when appropriate.
  * - Application should properly retrieve media assets from the provided network links.
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     // TODO add json parsing to tests
     // TODO add two intents test
     // orientation rotation test?
+    // TODO add preferences autoplay
 
     private final static String TAG = MainActivity.class.getSimpleName();
     private final static String LIST_STATE_KEY = "list-state-key";
@@ -79,12 +81,7 @@ public class MainActivity extends AppCompatActivity implements ListItemClickList
     }
 
     private int numberOfColumns() {
-        if(getResources().getBoolean(R.bool.is_tablet)) {
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-            int width = displayMetrics.widthPixels;
-            return width / 400;
-        } else return 1;
+        return getResources().getBoolean(R.bool.is_tablet) ? 3 : 1;
     }
 
     @Override
