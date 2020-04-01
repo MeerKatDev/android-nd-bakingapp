@@ -1,0 +1,16 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="@string/favorite_recipe">
+        <ListPreference
+            app:key="recipe"
+            app:title="@string/recipe_name"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/media_settings">
+        <SwitchPreferenceCompat
+            app:key="autoplay"
+            app:title="@string/autoplay_video" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

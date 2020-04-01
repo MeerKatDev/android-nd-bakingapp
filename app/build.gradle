@@ -11,7 +11,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -26,8 +26,10 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    dataBinding {
-        enabled = true
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
 
 }
@@ -51,6 +53,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
     // Storage
     implementation "android.arch.persistence.room:runtime:1.1.1"
+    implementation 'androidx.preference:preference:1.1.0-rc01'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     // Lifecycle operations
     implementation "android.arch.lifecycle:common-java8:1.1.1"
@@ -58,7 +61,8 @@ dependencies {
     // ExoPlayer - media playing
     implementation 'com.google.android.exoplayer:exoplayer:2.11.2'
 
-    testImplementation 'junit:junit:4.13'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    //testImplementation 'junit:junit:4.13'
+    //androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
 }

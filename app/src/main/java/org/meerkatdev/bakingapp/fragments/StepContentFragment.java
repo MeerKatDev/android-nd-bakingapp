@@ -1,7 +1,7 @@
-package org.meerkatdev.bakingapp.ui;
+package org.meerkatdev.bakingapp.fragments;
 
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,17 +10,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.solver.Metrics;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.source.MediaSource;
@@ -31,22 +29,21 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
+import org.meerkatdev.bakingapp.BuildConfig;
 import org.meerkatdev.bakingapp.R;
-import org.meerkatdev.bakingapp.RecipeStepsListActivity;
 import org.meerkatdev.bakingapp.data.RecipeStep;
-
-import java.util.prefs.PreferenceChangeEvent;
+import org.meerkatdev.bakingapp.utils.IntentTags;
+import org.meerkatdev.bakingapp.utils.RecipeStepHandler;
 
 public class StepContentFragment extends Fragment {
 
     private final String TAG = this.getClass().getSimpleName();
-    private final String PARCEL_TAG = "recipe-step";
     private SimpleExoPlayer sep;
     private PlayerView playerView;
     private RecipeStep recipeStep;
     private TextView descriptionView;
     private DataSource.Factory dataSourceFactory;
-    DisplayMetrics displayMetrics = new DisplayMetrics();
+    private DisplayMetrics displayMetrics = new DisplayMetrics();
 
     @Nullable // TODO should it be nullable?
     @Override
@@ -54,7 +51,8 @@ public class StepContentFragment extends Fragment {
         Log.d("LIFECYCLE", "Creating step content");
         final View rootView = inflater.inflate(R.layout.fragment_step_content, container, false);
         // TODO Adapt this to use with RecipeContentActivity
-        RecipeStepsListActivity fa = (RecipeStepsListActivity) rootView.getContext();
+        RecipeStepHandler fa;
+        fa = (RecipeStepHandler) rootView.getContext();
         Bundle bundle = fa.getIntent().getExtras();
         initView(rootView);
         if (bundle != null)
@@ -65,7 +63,7 @@ public class StepContentFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecipeStepsListActivity fa = (RecipeStepsListActivity) view.getContext();
+        RecipeStepHandler fa = (RecipeStepHandler) view.getContext();
         if(savedInstanceState != null)
             recoverFromBundle(fa, savedInstanceState);
     }
@@ -74,12 +72,13 @@ public class StepContentFragment extends Fragment {
     public void onSaveInstanceState(Bundle outState) {
         Log.d("LIFECYCLE", "fragment onSaveInstanceState");
         super.onSaveInstanceState(outState);
-        outState.putParcelable(PARCEL_TAG, this.recipeStep);
+        outState.putParcelable(IntentTags.RECIPE_STEP, this.recipeStep);
     }
 
-    private void recoverFromBundle(RecipeStepsListActivity fa, Bundle b) {
+    private void recoverFromBundle(RecipeStepHandler fa, Bundle b) {
         Log.d("LIFECYCLE", "recoverFromBundle");
-        this.recipeStep = (b.containsKey(PARCEL_TAG)) ? (RecipeStep) b.get(PARCEL_TAG) : fa.getFirstRecipeStep();
+        this.recipeStep = (b.containsKey(IntentTags.RECIPE_STEP)) ? (RecipeStep) b.get(IntentTags.RECIPE_STEP) : fa.getFirstRecipeStep();
+        assert this.recipeStep != null;
         setView(fa, this.recipeStep);
     }
 
@@ -95,28 +94,31 @@ public class StepContentFragment extends Fragment {
         // TODO maybe y?
         int heightDpi = Math.round(displayMetrics.heightPixels / (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
         int newHeight = (!getResources().getBoolean(R.bool.is_tablet) && ori == Configuration.ORIENTATION_LANDSCAPE) ? heightDpi : heightDpi / 2;
+        newHeight = (!getResources().getBoolean(R.bool.is_tablet) && ori == Configuration.ORIENTATION_PORTRAIT) ? 2*heightDpi : newHeight;
         playerView.setLayoutParams(new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, newHeight));
     }
 
     public void initView(View rootView) {
         sep = new SimpleExoPlayer.Builder(rootView.getContext()).build();
-        sep.setPlayWhenReady(true);
+        sep.setPlayWhenReady(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("autoplay", false));
         dataSourceFactory = new DefaultDataSourceFactory(rootView.getContext(), Util.getUserAgent(rootView.getContext(), "BakingApp"));
         playerView = rootView.findViewById(R.id.pv_instruction_video);
         playerView.setPlayer(sep);
         descriptionView = rootView.findViewById(R.id.tv_instruction_text);
     }
 
-    public void setView(FragmentActivity fa, RecipeStep recipeStep) {
+    public void setView(AppCompatActivity fa, RecipeStep recipeStep) {
         Log.d(TAG, "setupView");
         this.recipeStep = recipeStep;
         if(!recipeStep.videoURL.equals("")) {
             playerView.setVisibility(View.VISIBLE);
             setVideoSource(dataSourceFactory, Uri.parse(recipeStep.videoURL));
-            setArtwork(fa, recipeStep.thumbnailURL);
+        } else if(!recipeStep.thumbnailURL.equals("")) {
+            setVideoSource(dataSourceFactory, Uri.parse(recipeStep.thumbnailURL));
         } else {
             playerView.setVisibility(View.GONE);
         }
+
         descriptionView.setText(recipeStep.description);
 
     }
@@ -132,19 +134,11 @@ public class StepContentFragment extends Fragment {
         playerView.setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING);
     }
 
-
-    private void setArtwork(Context ctx, String thumbnailUrl) {
-        if(!thumbnailUrl.equals("")) {
-            ImageView thumbnailImageView = new ImageView(ctx);
-            Picasso.get().load(thumbnailUrl).into(thumbnailImageView);
-            playerView.setDefaultArtwork(thumbnailImageView.getDrawable());
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d("LIFECYCLE", "Destroying step content");
         sep.release();
     }
+
 }

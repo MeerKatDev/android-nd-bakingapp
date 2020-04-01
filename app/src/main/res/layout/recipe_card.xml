@@ -6,9 +6,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/recipe_card"
     app:strokeWidth="5dp"
-    app:strokeColor="@color/colorAccent"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp"
+    app:strokeColor="@android:color/transparent"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="16dp"
     android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -17,6 +17,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:background="@color/colorAccent"
         android:orientation="vertical">
 
         <ImageView
@@ -31,6 +32,7 @@
             android:id="@+id/tv_recipe_name"
             tools:text="Recipe name"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimaryLight"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

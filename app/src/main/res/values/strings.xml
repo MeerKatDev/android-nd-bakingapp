@@ -1,10 +1,10 @@
 <resources>
-    <string name="app_name">BakingApp</string>
-    <string name="appwidget_text">EXAMPLE</string>
+    <string name="app_name" translatable="false">BakingApp</string>
     <string name="add_widget">Add widget</string>
     <string name="recipe_thumbnail">Recipe thumbnail</string>
     <string name="label_prev">Previous</string>
     <string name="label_next">Next</string>
+    <string name="recipes_list">Recipes List</string>
 
     <string name="stub_text_instruction" translatable="false">
     Lorem ipsum dolor sit amet, consectetur adipiscing elit,
@@ -12,7 +12,22 @@
     Ut enim ad minim veniam, quis nostrud exercitation ullamco
     laboris nisi ut aliquip ex ea commodo consequat.
     </string>
-    <string name="stub_recipe_step_desc">Add something to this</string>
-    <string name="stub_recipe_step_index">1.</string>
+    <!-- Stubs for tools -->
+    <string name="stub_recipe_step_desc" translatable="false">Add something to this</string>
+    <string name="stub_recipe_step_index" translatable="false">1.</string>
+    <string name="stub_recipe_name" translatable="false">Nutella Pie</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+
+    <string name="favorite_recipe">Recipe on widget</string>
+    <string name="autoplay_video">Autoplay recipe videos?</string>
+    <string name="media_settings">Media settings</string>
+    <string name="recipe_name">Recipe</string>
+    <string name="no_recipe_chosen">No recipe chosen</string>
+    <string name="ingredients_recipe">Ingredients for</string>
+    <string name="choose_recipe">You have to choose a recipe in the preferences to display its ingredients here</string>
+    <string name="pie_icon">Pie icon</string>
 
 </resources>

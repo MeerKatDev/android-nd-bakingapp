@@ -3,8 +3,7 @@ package org.meerkatdev.bakingapp.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.Expose;
-
+import androidx.annotation.NonNull;
 
 public class Recipe implements Parcelable {
 
@@ -50,4 +49,10 @@ public class Recipe implements Parcelable {
             return new Recipe[size];
         }
     };
+
+    @NonNull
+    @Override
+    public String toString() {
+        return this.name + "; " + this.image;
+    }
 }

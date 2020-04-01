@@ -1,4 +1,4 @@
-package org.meerkatdev.bakingapp.ui;
+package org.meerkatdev.bakingapp.fragments;
 
 import android.content.Context;
 import android.content.Intent;

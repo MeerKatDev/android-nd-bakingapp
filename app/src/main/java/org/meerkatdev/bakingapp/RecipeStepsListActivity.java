@@ -8,23 +8,23 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import org.meerkatdev.bakingapp.data.Recipe;
 import org.meerkatdev.bakingapp.data.RecipeStep;
-import org.meerkatdev.bakingapp.ui.StepContentFragment;
+import org.meerkatdev.bakingapp.fragments.StepContentFragment;
 import org.meerkatdev.bakingapp.utils.ItemClickListener;
+import org.meerkatdev.bakingapp.utils.RecipeStepHandler;
 
-public class RecipeStepsListActivity extends FragmentActivity implements ItemClickListener {
+public class RecipeStepsListActivity extends RecipeStepHandler implements ItemClickListener  {
 
     private final String TAG = this.getClass().getSimpleName();
     private final String LIFECYCLE_TAG = "LIFECYCLE";
     private final static String CONTENT_FRAGMENT_TAG = "content_fragment";
+    private final static String RECIPE_TAG = "recipe";
 
     private boolean mTwoPane = false;
     private StepContentFragment contentFragment;
-    //private StepsListFragment stepsListFragment;
     public Recipe recipe;
     public FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -32,8 +32,9 @@ public class RecipeStepsListActivity extends FragmentActivity implements ItemCli
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
-        if(b != null && b.containsKey("recipe")) {
-            recipe = b.getParcelable("recipe");
+        if(b != null && b.containsKey(RECIPE_TAG)) {
+            recipe = b.getParcelable(RECIPE_TAG);
+            getSupportActionBar().setTitle(recipe.name);
         }
         setContentView(R.layout.activity_recipe_steps);
         Log.d(LIFECYCLE_TAG, "creating " + TAG);
