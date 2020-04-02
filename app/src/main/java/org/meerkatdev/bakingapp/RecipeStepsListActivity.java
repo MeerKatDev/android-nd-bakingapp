@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import org.meerkatdev.bakingapp.data.Recipe;
 import org.meerkatdev.bakingapp.data.RecipeStep;
 import org.meerkatdev.bakingapp.fragments.StepContentFragment;
+import org.meerkatdev.bakingapp.utils.IntentTags;
 import org.meerkatdev.bakingapp.utils.ItemClickListener;
 import org.meerkatdev.bakingapp.utils.RecipeStepHandler;
 
@@ -20,8 +21,6 @@ public class RecipeStepsListActivity extends RecipeStepHandler implements ItemCl
 
     private final String TAG = this.getClass().getSimpleName();
     private final String LIFECYCLE_TAG = "LIFECYCLE";
-    private final static String CONTENT_FRAGMENT_TAG = "content_fragment";
-    private final static String RECIPE_TAG = "recipe";
 
     private boolean mTwoPane = false;
     private StepContentFragment contentFragment;
@@ -32,8 +31,8 @@ public class RecipeStepsListActivity extends RecipeStepHandler implements ItemCl
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle b = getIntent().getExtras();
-        if(b != null && b.containsKey(RECIPE_TAG)) {
-            recipe = b.getParcelable(RECIPE_TAG);
+        if(b != null && b.containsKey(IntentTags.RECIPE)) {
+            recipe = b.getParcelable(IntentTags.RECIPE);
             getSupportActionBar().setTitle(recipe.name);
         }
         setContentView(R.layout.activity_recipe_steps);
@@ -41,10 +40,7 @@ public class RecipeStepsListActivity extends RecipeStepHandler implements ItemCl
 
         if(findViewById(R.id.pv_instruction_video) != null) {
             mTwoPane = true;
-            Log.d(LIFECYCLE_TAG, "pv_instruction_video not null");
             contentFragment = (StepContentFragment) fragmentManager.findFragmentById(R.id.step_content_fragment);
-            //stepsListFragment = (StepsListFragment) fragmentManager.findFragmentById(R.id.steps_list_fragment);
-            Log.d(LIFECYCLE_TAG, "fragment casted");
             hideNavButtons(contentFragment);
         }
     }
@@ -85,7 +81,8 @@ public class RecipeStepsListActivity extends RecipeStepHandler implements ItemCl
             contentFragment.setView(this, recipeStep);
         } else {
             Intent intent = new Intent(this, RecipeContentActivity.class);
-            intent.putExtra("recipe_step", recipeStep);
+            intent.putExtra(IntentTags.RECIPE_STEP, recipeStep);
+            intent.putExtra(IntentTags.RECIPE, recipe);
             startActivity(intent);
         }
     }

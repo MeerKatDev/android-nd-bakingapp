@@ -26,7 +26,7 @@
     <string name="media_settings">Media settings</string>
     <string name="recipe_name">Recipe</string>
     <string name="no_recipe_chosen">No recipe chosen</string>
-    <string name="ingredients_recipe">Ingredients for</string>
+    <string name="ingredients_recipe">Ingredients for </string>
     <string name="choose_recipe">You have to choose a recipe in the preferences to display its ingredients here</string>
     <string name="pie_icon">Pie icon</string>
 

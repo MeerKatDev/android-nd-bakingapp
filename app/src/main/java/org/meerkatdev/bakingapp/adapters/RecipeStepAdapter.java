@@ -1,6 +1,5 @@
 package org.meerkatdev.bakingapp.adapters;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,23 +25,16 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
 
     @NonNull
     @Override
-    public RecipeStepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+    public RecipeStepAdapter.RecipeStepViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.recipe_step_item, parent, false);
         return new RecipeStepAdapter.RecipeStepViewHolder(view);
     }
 
-    // used only when
-    private void setRecipeStepContent(Context ctx) {
-
-    }
-
     @Override
-    public void onBindViewHolder(@NonNull RecipeStepViewHolder holder, int position) {
-        View view = holder.itemView.getRootView();
-        ((TextView)view.findViewById(R.id.tv_recipe_step_index)).setText(String.valueOf(elements[position].id));
-        ((TextView)view.findViewById(R.id.tv_recipe_step_description)).setText(elements[position].shortDescription);
+    public void onBindViewHolder(@NonNull RecipeStepAdapter.RecipeStepViewHolder holder, int position) {
+        holder.indexTextView.setText(String.valueOf(elements[position].id));
+        holder.descriptionTextView.setText(elements[position].shortDescription);
     }
 
     @Override
@@ -56,11 +48,15 @@ public class RecipeStepAdapter extends RecyclerView.Adapter<RecipeStepAdapter.Re
         notifyDataSetChanged();
     }
 
-
     protected class RecipeStepViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        private TextView indexTextView;
+        private TextView descriptionTextView;
 
         RecipeStepViewHolder(View itemView) {
             super(itemView);
+            indexTextView = itemView.findViewById(R.id.tv_recipe_step_index);
+            descriptionTextView = itemView.findViewById(R.id.tv_recipe_step_description);
             itemView.setOnClickListener(this);
         }
 

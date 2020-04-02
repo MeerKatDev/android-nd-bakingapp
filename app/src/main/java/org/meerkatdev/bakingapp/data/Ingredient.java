@@ -5,12 +5,12 @@ import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
 
-    public String name;
+    public String ingredient;
     public String measure;
     public String quantity;
 
     public Ingredient(String name, String measure, String quantity) {
-        this.name = name;
+        this.ingredient = name;
         this.measure = measure;
         this.quantity = quantity;
     }
@@ -22,13 +22,13 @@ public class Ingredient implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.name);
+        dest.writeString(this.ingredient);
         dest.writeString(this.measure);
         dest.writeString(this.quantity);
     }
 
     protected Ingredient(Parcel in) {
-        this.name = in.readString();
+        this.ingredient = in.readString();
         this.measure = in.readString();
         this.quantity = in.readString();
     }

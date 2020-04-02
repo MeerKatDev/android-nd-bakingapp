@@ -2,7 +2,7 @@
 
     <PreferenceCategory app:title="@string/favorite_recipe">
         <ListPreference
-            app:key="recipe"
+            app:key="recipe_name"
             app:title="@string/recipe_name"
             app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>

@@ -1,7 +1,6 @@
 package org.meerkatdev.bakingapp.fragments;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,10 +25,9 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
-import com.squareup.picasso.Picasso;
 
-import org.meerkatdev.bakingapp.BuildConfig;
 import org.meerkatdev.bakingapp.R;
+import org.meerkatdev.bakingapp.RecipeContentActivity;
 import org.meerkatdev.bakingapp.data.RecipeStep;
 import org.meerkatdev.bakingapp.utils.IntentTags;
 import org.meerkatdev.bakingapp.utils.RecipeStepHandler;
@@ -50,15 +47,14 @@ public class StepContentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("LIFECYCLE", "Creating step content");
         final View rootView = inflater.inflate(R.layout.fragment_step_content, container, false);
-        // TODO Adapt this to use with RecipeContentActivity
-        RecipeStepHandler fa;
-        fa = (RecipeStepHandler) rootView.getContext();
-        Bundle bundle = fa.getIntent().getExtras();
+        RecipeStepHandler fa = (RecipeStepHandler) rootView.getContext();
         initView(rootView);
+        Bundle bundle = fa.getIntent().getExtras();
         if (bundle != null)
             recoverFromBundle(fa, bundle);
         return rootView;
     }
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -77,8 +73,7 @@ public class StepContentFragment extends Fragment {
 
     private void recoverFromBundle(RecipeStepHandler fa, Bundle b) {
         Log.d("LIFECYCLE", "recoverFromBundle");
-        this.recipeStep = (b.containsKey(IntentTags.RECIPE_STEP)) ? (RecipeStep) b.get(IntentTags.RECIPE_STEP) : fa.getFirstRecipeStep();
-        assert this.recipeStep != null;
+        this.recipeStep = (b.containsKey(IntentTags.RECIPE_STEP)) ? (RecipeStep) b.getParcelable(IntentTags.RECIPE_STEP) : fa.getFirstRecipeStep();
         setView(fa, this.recipeStep);
     }
 
@@ -101,7 +96,7 @@ public class StepContentFragment extends Fragment {
     public void initView(View rootView) {
         sep = new SimpleExoPlayer.Builder(rootView.getContext()).build();
         sep.setPlayWhenReady(PreferenceManager.getDefaultSharedPreferences(getContext()).getBoolean("autoplay", false));
-        dataSourceFactory = new DefaultDataSourceFactory(rootView.getContext(), Util.getUserAgent(rootView.getContext(), "BakingApp"));
+        dataSourceFactory = new DefaultDataSourceFactory(rootView.getContext(), Util.getUserAgent(rootView.getContext(), getString(R.string.app_name)));
         playerView = rootView.findViewById(R.id.pv_instruction_video);
         playerView.setPlayer(sep);
         descriptionView = rootView.findViewById(R.id.tv_instruction_text);
@@ -122,6 +117,7 @@ public class StepContentFragment extends Fragment {
         descriptionView.setText(recipeStep.description);
 
     }
+
 
     private void setVideoSource(DataSource.Factory dataSourceFactory, Uri videoUrl) {
         Log.d(TAG, "setVideoSource");

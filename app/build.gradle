@@ -6,12 +6,15 @@ android {
 
     defaultConfig {
         applicationId "org.meerkatdev.bakingapp"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
 
-        //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // 1) Make sure to use the AndroidJUnitRunner, of a subclass of it. This requires a dependency on androidx.test:runner, too!
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // 2) Connect JUnit 5 to the runner
+        testInstrumentationRunnerArgument "runnerBuilder", "de.mannodermaus.junit5.AndroidJUnit5Builder"
     }
 
     buildTypes {
@@ -30,6 +33,10 @@ android {
         unitTests.all {
             useJUnitPlatform()
         }
+    }
+
+    packagingOptions {
+        exclude "META-INF/LICENSE*"
     }
 
 }
@@ -53,7 +60,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.4.0'
     // Storage
     implementation "android.arch.persistence.room:runtime:1.1.1"
-    implementation 'androidx.preference:preference:1.1.0-rc01'
+    implementation 'androidx.preference:preference:1.1.0'
     annotationProcessor "android.arch.persistence.room:compiler:1.1.1"
     // Lifecycle operations
     implementation "android.arch.lifecycle:common-java8:1.1.1"
@@ -62,7 +69,22 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.11.2'
 
     //testImplementation 'junit:junit:4.13'
+    testImplementation "org.junit.jupiter:junit-jupiter:5.6.0"
     //androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.6.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.2.0'
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.6.0"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.6.0"
+
+
+    // 5) Jupiter API & Test Runner, if you don't have it already
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test:rules:1.2.0'
+    androidTestImplementation "org.junit.jupiter:junit-jupiter-api:5.6.0"
+
+    // 6) The instrumentation test companion libraries
+    androidTestImplementation "de.mannodermaus.junit5:android-test-core:1.2.0"
+    androidTestRuntimeOnly "de.mannodermaus.junit5:android-test-runner:1.2.0"
 }

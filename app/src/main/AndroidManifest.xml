@@ -11,9 +11,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".services.RecipeService"
-            android:exported="false"></service>
 
         <activity
             android:name=".widget.IngredientsListActivity"
@@ -21,7 +18,7 @@
             android:noHistory="true"
             android:theme="@style/Theme.MaterialComponents.NoActionBar.Transparent" />
 
-        <receiver android:name=".widget.IngredientListWidget">
+        <receiver android:name=".widget.IngredientListWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
